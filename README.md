@@ -1,4 +1,4 @@
-# adonis-bun
+# Bun backend template
 
 To install dependencies:
 
