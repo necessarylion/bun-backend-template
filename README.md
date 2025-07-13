@@ -9,7 +9,19 @@ bun install
 To run:
 
 ```bash
-bun run index.ts
+bun run dev
+```
+
+To build:
+
+```bash
+bun run build
+```
+
+To run the built file:
+
+```bash
+./server
 ```
 
 This project was created using `bun init` in bun v1.2.19. [Bun](https://bun.com) is a fast all-in-one JavaScript runtime.
