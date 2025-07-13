@@ -4,7 +4,7 @@ import { env, serve } from "bun";
 
 serve({
   port: env.PORT,
-  routes: Route.getRoutes(),
+  routes: Route.list(),
   fetch: async () => new Response('Route not found', { status: 404 })
 })
 
