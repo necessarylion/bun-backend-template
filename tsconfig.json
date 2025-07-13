@@ -29,7 +29,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "paths": {
-      "#routes/*": ["./routes/*"],
+      "#router/*": ["./router/*"],
       "#start/*": ["./start/*"],
       "#services/*": ["./app/services/*"],
       "#utils/*": ["./app/utils/*"],

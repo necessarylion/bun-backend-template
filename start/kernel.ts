@@ -1,4 +1,4 @@
-import { Route } from "#routes/index";
+import { Route } from "../router/index";
 import { logger } from "#utils/logger.utils";
 import { env, serve } from "bun";
 
