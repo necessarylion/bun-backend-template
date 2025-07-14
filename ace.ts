@@ -1,4 +1,4 @@
-import '#start/db'
+import '#start/sql'
 import { Migration } from '#core/migration';
 import { Command } from 'commander';
 

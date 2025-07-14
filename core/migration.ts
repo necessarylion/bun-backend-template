@@ -1,4 +1,4 @@
-import sql from "#start/db";
+import sql from "#start/sql";
 import { readdir } from "node:fs/promises";
 import { logger } from "#core/logger";
 

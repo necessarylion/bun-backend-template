@@ -1,4 +1,4 @@
 import 'reflect-metadata'
-import '#start/db'
+import '#start/sql'
 import '#start/routes'
 import '#start/kernel'

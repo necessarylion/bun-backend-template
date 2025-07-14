@@ -1,6 +1,6 @@
-import { env, SQL } from "bun";
+import { env, type SQLOptions } from "bun";
 
-const sql = new SQL({
+export default {
   // Optional configuration
   hostname: env.DB_HOST,
   port: env.DB_PORT,
@@ -13,7 +13,4 @@ const sql = new SQL({
   idleTimeout: 30, // Close idle connections after 30s
   maxLifetime: 0, // Connection lifetime in seconds (0 = forever)
   connectionTimeout: 30, // Timeout when establishing new connections
-});
-
-export default sql;
-
+} as SQLOptions

@@ -1,4 +1,4 @@
-import sql from "#start/db";
+import sql from "#start/sql";
 import { Service } from "typedi"
 import type { User } from "#models/user.model";
 
