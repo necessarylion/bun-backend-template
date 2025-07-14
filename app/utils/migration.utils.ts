@@ -55,7 +55,7 @@ export class Migration {
   async #createMigrationTableIfNotExists() {
     await sql`CREATE TABLE IF NOT EXISTS migrations (
       id SERIAL PRIMARY KEY,
-      name VARCHAR(255) NOT NULL,
+      name VARCHAR(255) NOT NULL UNIQUE,
       batch INT NOT NULL,
       created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
     )`
