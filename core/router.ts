@@ -1,7 +1,6 @@
 import Container from 'typedi';
 import type { Controller, Middleware, RouteItem } from './types';
-import { isClass, isTuple } from '#utils/index.utils';
-import { responseParser } from '#utils/response.utils';
+import { isClass, isTuple, responseParser } from '#core/helper';
 
 export class Router {
   /**

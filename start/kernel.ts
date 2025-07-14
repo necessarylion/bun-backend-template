@@ -1,7 +1,7 @@
-import { Router } from "#core/router";
-import { logger } from "#utils/logger.utils";
 import { env, serve } from "bun";
-import { Migration } from '#utils/migration.utils'
+import { Router } from "#core/router";
+import { logger } from "#core/logger";
+import { Migration } from '#core/migration'
 
 // run migration before server start
 const migration = new Migration()

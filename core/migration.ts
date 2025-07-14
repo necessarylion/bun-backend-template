@@ -1,6 +1,6 @@
 import sql from "#start/db";
 import { readdir } from "node:fs/promises";
-import { logger } from "./logger.utils";
+import { logger } from "#core/logger";
 
 export class Migration {
   private migrationDir: string;

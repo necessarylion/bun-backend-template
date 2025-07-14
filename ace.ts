@@ -1,5 +1,5 @@
 import '#start/db'
-import { Migration } from '#utils/migration.utils';
+import { Migration } from '#core/migration';
 import { Command } from 'commander';
 
 const program = new Command();
