@@ -1,6 +1,6 @@
 import UserController from "#controllers/user.controller";
 import UserMiddleware from "#middlewares/user.middleware";
-import Route from "#router/route";
+import Route from "#core/route";
 
 Route.get('/', [UserController, 'index']);
 Route.get('/ok', () => {

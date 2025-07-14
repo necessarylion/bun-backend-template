@@ -6,7 +6,13 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 // Custom format for development (human-readable)
 const devFormat = combine(
-  colorize(),
+  colorize({ all: true, colors: {
+    info: 'blue',
+    error: 'red',
+    warn: 'yellow',
+    debug: 'green',
+    verbose: 'cyan',
+  } }),
   timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
   printf(({ level, message, timestamp, ...meta }) => {
     const metaString = Object.keys(meta).length > 0 ? ` ${JSON.stringify(meta)}` : '';

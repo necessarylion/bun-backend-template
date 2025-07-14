@@ -1,4 +1,4 @@
-import type { Controller } from "#router/index";
+import type { Controller } from "../../core/router";
 
 // Helper function to check if a value is a class constructor
 export function isClass(v: any): v is new (...args: any[]) => any {

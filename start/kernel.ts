@@ -1,6 +1,11 @@
-import { Router } from "../router/index";
+import { Router } from "#core/router";
 import { logger } from "#utils/logger.utils";
 import { env, serve } from "bun";
+import { Migration } from '#utils/migration.utils'
+
+// run migration before server start
+const migration = new Migration()
+await migration.up()
 
 serve({
   port: env.PORT,

@@ -1,4 +1,4 @@
-import type { MiddlewareInterface } from "#router/types";
+import type { MiddlewareInterface } from "../../core/types";
 import BlogService from "#services/blog.service";
 import { Service } from "typedi";
 
@@ -9,7 +9,6 @@ export default class UserMiddleware implements MiddlewareInterface {
   handle(req: Request): any {
     const { searchParams } = new URL(req.url)
     const name = searchParams.get('name')
-    this.service.sayHello()
-    if (!name) return 'Name is required';
+    this.service.sayHello(name || '')
   }
 }

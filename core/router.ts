@@ -50,7 +50,7 @@ export class Router {
    * @param method - The method of the route
    * @param controller - The controller function
    */
-  public static add(path: string, method: string, controller: Controller, middlewares: Middleware[] = []) {
+  public static registerRoute(path: string, method: string, controller: Controller, middlewares: Middleware[] = []) {
     const routerInstance = new Router();
     routerInstance.routes.push({ path, method, controller, middlewares });
     return routerInstance;
@@ -64,7 +64,6 @@ export class Router {
     const records: Record<string, any> = {}
     const router = new Router();
     for (const { controller, path, method, middlewares } of router.routes) {
-      console.log(path, method, middlewares.length)
       // setting the object for path
       // eg. 
       // {
@@ -136,7 +135,8 @@ export class Router {
       } else {
         mRes = await middleware(req)
       }
-      // if middleware returns a response, return it
+      // if middleware returns a response, 
+      // return it immediately to stop the execution of other middlewares
       if (mRes) return mRes
     }
     return mRes;

@@ -28,10 +28,15 @@
 
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "esModuleInterop": true,
+    "declaration": true,
+
     "paths": {
-      "#router/*": ["./router/*"],
+      "#core/*": ["./core/*"],
+      "#config/*": ["./config/*"],
       "#start/*": ["./start/*"],
       "#services/*": ["./app/services/*"],
+      "#models/*": ["./app/models/*"],
       "#utils/*": ["./app/utils/*"],
       "#controllers/*": ["./app/controllers/*"],
       "#middlewares/*": ["./app/middlewares/*"],

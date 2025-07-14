@@ -11,7 +11,7 @@ export default class UserController {
   }
 
   public async createUser(req: Request) {
-    return { message: 'Hello from user controller create user' };
+    return await this.userService.createUser()
   }
     
   public async getUsers(req: Request) {

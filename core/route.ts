@@ -1,5 +1,5 @@
-import { Router } from ".";
-import type { Controller, Middleware, RouteItem } from "./types";
+import { Router } from "./router";
+import type { Controller, Middleware } from "./types";
 
 export default class Route {
 
@@ -128,6 +128,6 @@ export default class Route {
     const route = new Route()
     let newPath = (route.currentPath + '/' + path).replace(/\/+/g, '/').trim().replace(/\/$/, '')
     newPath = newPath === '' ? '/' : newPath
-    return Router.add(newPath, method, controller, route.middlewares);
+    return Router.registerRoute(newPath, method, controller, route.middlewares);
   }
 }
