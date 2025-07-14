@@ -1,10 +1,10 @@
-import { Route } from "../router/index";
+import { Router } from "../router/index";
 import { logger } from "#utils/logger.utils";
 import { env, serve } from "bun";
 
 serve({
   port: env.PORT,
-  routes: Route.list(),
+  routes: Router.list(),
   fetch: async () => new Response('Route not found', { status: 404 })
 })
 
