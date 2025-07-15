@@ -1,5 +1,5 @@
 {
-  "name": "adonis-bun",
+  "name": "bun-backend-template",
   "module": "index.ts",
   "type": "module",
   "private": true,
