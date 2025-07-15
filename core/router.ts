@@ -1,6 +1,7 @@
 import Container from 'typedi';
 import type { Controller, Middleware, RouteItem } from './types';
 import { isClass, isTuple, responseParser } from '#core/helper';
+import Exception from './exception/exception';
 
 export class Router {
   /**
@@ -78,13 +79,20 @@ export class Router {
       const services = router.#getContainerServices(middlewares, controller);
       // assign the controller to the route path
       records[path][method] = async (req: Request) => {
-        const mRes = await router.#handleMiddlewares(
-          req,
-          middlewares,
-          services,
-        );
-        if (mRes) return responseParser(mRes);
-        return router.#handleController(req, controller, services);
+        try {
+          const mRes = await router.#handleMiddlewares(
+            req,
+            middlewares,
+            services,
+          );
+          if (mRes) return responseParser(mRes);
+          return await router.#handleController(req, controller, services);
+        } catch (error: any) {
+          if (error instanceof Exception) {
+            return error.handle();
+          }
+          return new Response(error.message);
+        }
       };
     }
     return records;

@@ -27,6 +27,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@vinejs/vine": "^3.0.1",
     "change-case": "^5.4.4",
     "pg": "^8.16.3",
     "prettier": "^3.6.2",
