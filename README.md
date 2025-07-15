@@ -10,6 +10,7 @@ A modern, fast backend framework built with [Bun](https://bun.com) and inspired 
 - **Dependency Injection**: Clean architecture with TypeDI
 - **Custom Router**: Lightweight, flexible routing system
 - **Service Layer**: Organized business logic
+- **Request Validation**: Built-in VineJS validation with custom error handling
 - **Docker Ready**: Production-ready containerization
 - **Logging**: Winston-based logging system
 - **Hot Reload**: Development with file watching
@@ -129,6 +130,58 @@ export default class UserController {
   public async index() {
     return this.userService.getUsers();
   }
+}
+```
+
+### Request Validation
+
+The framework includes built-in request validation using [VineJS](https://vinejs.dev/). The Request object is extended with a `validate` method that automatically handles validation errors:
+
+```typescript
+import { Service } from 'typedi';
+import vine from '@vinejs/vine';
+
+@Service()
+export default class UserController {
+  public async createUser(req: Request) {
+    // Define validation schema
+    const schema = vine.object({
+      name: vine.string().minLength(2).maxLength(50),
+      email: vine.string().email(),
+      password: vine.string().minLength(8).maxLength(32),
+      age: vine.number().optional().min(18),
+    });
+
+    // Validate request data (query params + body)
+    const payload = await req.validate(schema);
+    
+    // Use validated data
+    return { message: 'User created', data: payload };
+  }
+}
+```
+
+#### Validation Error Response
+
+When validation fails, the framework automatically returns a structured error response:
+
+```json
+{
+  "code": "VALIDATION_EXCEPTION",
+  "message": "Validation failed",
+  "status": 422,
+  "errors": [
+    {
+      "field": "email",
+      "rule": "required",
+      "message": "The email field must be a valid email address"
+    },
+    {
+      "field": "password", 
+      "rule": "required",
+      "message": "The password field must be at least 8 characters"
+    }
+  ]
 }
 ```
 
