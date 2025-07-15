@@ -14,6 +14,7 @@ if (env.NODE_ENV === 'production') {
 }
 
 serve({
+  development: env.NODE_ENV === 'development',
   port: env.PORT,
   routes: Router.list(),
   fetch: async () => new Response('Route not found', { status: 404 }),
