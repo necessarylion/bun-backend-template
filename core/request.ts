@@ -4,7 +4,7 @@
  */
 
 import vine, { errors } from '@vinejs/vine';
-import type { SchemaTypes } from '@vinejs/vine/types';
+import type { Infer, SchemaTypes } from '@vinejs/vine/types';
 import ValidationException from './exception/validation_exception';
 import Exception from './exception/exception';
 
@@ -34,9 +34,9 @@ if (!Request.prototype.all) {
 if (!Request.prototype.jsonBody) {
   Request.prototype.jsonBody = async function (): Promise<Record<string, any>> {
     let body: Record<string, any> = {};
-    if (this.method === 'POST') {
+    // if (this.method === 'POST') {
       body = (await this.json()) as Record<string, any>;
-    }
+    // }
     return body;
   };
 }
@@ -69,7 +69,7 @@ declare global {
     jsonBody(): Promise<Record<string, any>>;
     validate<Schema extends SchemaTypes>(
       schema: Schema,
-    ): Promise<Record<string, any>>;
+    ): Promise<Infer<Schema>>;
     params: Record<string, string>;
   }
 }

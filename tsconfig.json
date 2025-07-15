@@ -40,6 +40,8 @@
       "#utils/*": ["./app/utils/*"],
       "#controllers/*": ["./app/controllers/*"],
       "#middlewares/*": ["./app/middlewares/*"],
+      "#repositories/*": ["./app/repositories/*"],
+      "#validators/*": ["./app/validators/*"],
     }
   }
 }

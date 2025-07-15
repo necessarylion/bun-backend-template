@@ -2,6 +2,7 @@ import Container from 'typedi';
 import type { Controller, Middleware, RouteItem } from './types';
 import { isClass, isTuple, responseParser } from '#core/helper';
 import Exception from './exception/exception';
+import { logger } from './logger';
 
 export class Router {
   /**
@@ -81,22 +82,45 @@ export class Router {
       // assign the handler to the route path
       records[path][method] = async (req: Request) => {
         try {
+          // handle middlewares
           const middlewareResponse = await router.#handleMiddlewares(
             req,
             middlewares,
             services,
           );
           if (middlewareResponse) return responseParser(middlewareResponse);
+
+          // handle controller
           return await router.#handleController(req, controller, services);
         } catch (error: any) {
-          if (error instanceof Exception) {
-            return error.handle();
-          }
-          return new Response(error.message);
+          return router.#handleError(error);
         }
       };
     }
     return records;
+  }
+
+  /**
+   * Handle the error
+   * @param error - The error object
+   * @returns The response
+   */
+  #handleError(error: any) {
+    if (error instanceof Exception) return error.handle();
+    if (error instanceof Error) {
+      const res = Response.json({
+        message: error.message,
+        status: 500,
+      }, { status: 500 });
+      logger.error(error);
+      return res;
+    }
+    const res = Response.json({
+      message: 'Internal server error',
+      status: 500,
+    }, { status: 500 });
+    logger.error(error);
+    return res;
   }
 
   /**

@@ -1,12 +1,9 @@
 import { snakeCase } from 'change-case';
 import Exception from './exception';
 
-export default class ValidationException extends Exception {
-  public errors: Record<string, string>[] = [];
-
-  constructor(message: string, errors: Record<string, string>[] = []) {
-    super(message, 422);
-    this.errors = errors;
+export default class ServerException extends Exception {
+  constructor(message: string, status: number = 500) {
+    super(message, status);
   }
 
   override handle() {
@@ -15,7 +12,6 @@ export default class ValidationException extends Exception {
         code: snakeCase(this.code).toUpperCase(),
         message: this.message,
         status: this.status,
-        errors: this.errors,
       },
       { status: this.status },
     );

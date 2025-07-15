@@ -1,30 +1,26 @@
 import { Service } from 'typedi';
 import UserService from '../services/user.service';
-import vine from '@vinejs/vine';
+import { vUserCreate } from '#validators/user.validator';
 
 @Service()
 export default class UserController {
   constructor(private readonly userService: UserService) {}
 
-  public async index(req: Request) {
-    const schema = vine.object({
-      email: vine.string().email(),
-      password: vine.string().minLength(8).maxLength(32),
-    });
-    const payload = await req.validate(schema);
-    return payload;
+  public async index() {
+    return await this.userService.listing();
   }
 
-  public async createUser() {
-    return await this.userService.createUser();
+  public async create(req: Request) {
+    const payload = await req.validate(vUserCreate);
+    return await this.userService.create(payload);
   }
 
-  public async getUsers() {
-    const users = await this.userService.getUsers();
-    return users;
+  public async update(req: Request) {
+    const payload = await req.validate(vUserCreate);
+    return await this.userService.update(Number(req.params.id), payload);
   }
 
-  sayHello() {
-    console.log('hello');
+  public async destroy(req: Request) {
+    return await this.userService.delete(Number(req.params.id));
   }
 }

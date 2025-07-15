@@ -1,32 +1,30 @@
-import sql from '#start/sql';
 import { Service } from 'typedi';
+import UserRepository from '#repositories/user.repository';
 import type { User } from '#models/user.model';
+import type { VUserCreate } from '#validators/user.validator';
 
 @Service()
 export default class UserService {
-  async createUser() {
+  constructor(private readonly userRepository: UserRepository) {}
+
+  async create(payload: VUserCreate) {
     const userData: User = {
-      name: 'Alice',
-      email: Date.now() + '@example.com',
-      password: '123456',
+      ...payload,
       created_at: new Date(),
       updated_at: new Date(),
     };
-    const [newUser]: User[] = await sql`
-      INSERT INTO users ${sql(userData)}
-      RETURNING *
-    `;
-    return newUser;
+    return this.userRepository.createUser(userData);
   }
 
-  async getUsers(): Promise<{ message: string; data: User[] }> {
-    const users: User[] = await sql`
-      SELECT * FROM users
-      LIMIT ${1}
-    `;
-    return {
-      message: 'Users fetched successfully',
-      data: users,
-    };
+  async update(id: number, userData: Partial<User>) {
+    return this.userRepository.updateUser(id, userData);
+  }
+
+  async delete(id: number) {
+    return this.userRepository.deleteUser(id);
+  }
+
+  async listing() {
+    return await this.userRepository.getUsers();
   }
 }

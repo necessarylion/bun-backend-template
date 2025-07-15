@@ -1,17 +1,9 @@
 import UserController from '#controllers/user.controller';
 import Route from '#core/route';
 
-Route.post('/name/:id', [UserController, 'index']);
-Route.get('/ok', () => {
-  return new Response('ok');
-});
-
 Route.group('/users', () => {
-  Route.get('/', [UserController, 'createUser']);
-  Route.get('/list', [UserController, 'getUsers']);
-});
-
-Route.group('/blogs', () => {
-  Route.get('/', [UserController, 'createUser']);
-  Route.get('/list', [UserController, 'getUsers']);
+  Route.get('/', [UserController, 'index']);
+  Route.post('/', [UserController, 'create']);
+  Route.put('/:id', [UserController, 'update']);
+  Route.delete('/:id', [UserController, 'destroy']);
 });
