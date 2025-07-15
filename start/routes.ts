@@ -1,7 +1,7 @@
 import UserController from '#controllers/user.controller';
 import Route from '#core/route';
 
-Route.get('/', [UserController, 'index']);
+Route.post('/name/:id', [UserController, 'index']);
 Route.get('/ok', () => {
   return new Response('ok');
 });

@@ -1,0 +1,47 @@
+/**
+ * Extends the built-in Bun Request class with additional utility methods
+ * This extends the prototype of the existing Request class
+ */
+
+// Extend the Request prototype to add query method
+if (!Request.prototype.query) {
+  Request.prototype.query = function(): Record<string, string> {
+    const url = new URL(this.url);
+    const queryParams: Record<string, string> = {};
+    // Parse all query parameters from the URL
+    for (const [key, value] of url.searchParams.entries()) {
+      queryParams[key] = value;
+    }
+    return queryParams;
+  };
+}
+
+// Extend the Request prototype to add all method
+if (!Request.prototype.all) {
+  Request.prototype.all = async function(): Promise<Record<string, any>> {
+    const queryParams = this.query();
+    const body = await this.jsonBody();
+    return { ...queryParams, ...body };
+  };
+}
+
+// Extend the Request prototype to add jsonBody method
+if (!Request.prototype.jsonBody) {
+  Request.prototype.jsonBody = async function(): Promise<Record<string, any>> {
+    let body: Record<string, any> = {};
+    if (this.method === 'POST') {
+      body = (await this.json()) as Record<string, any>;
+    }
+    return body;
+  };
+}
+
+// Type declaration to extend the Request interface
+declare global {
+  interface Request {
+    query(): Record<string, string>;
+    all(): Promise<Record<string, any>>;
+    jsonBody(): Promise<Record<string, any>>;
+    params: Record<string, string>;
+  }
+} 

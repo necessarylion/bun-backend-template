@@ -5,8 +5,12 @@ import UserService from '../services/user.service';
 export default class UserController {
   constructor(private readonly userService: UserService) {}
 
-  public async index() {
-    return { message: 'Hello from user controller' };
+  public async index(req: Request) {
+    const payload = req.params.id;
+    return { 
+      message: 'Hello from user controller',
+      payload 
+    };
   }
 
   public async createUser() {

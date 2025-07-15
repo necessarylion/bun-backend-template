@@ -1,3 +1,4 @@
 [x] Create migration with ace command
-[ ] Create a middleware with ace command
+[x] Create a middleware with ace command
+[ ] Route with params
 [ ] Create a controller with ace command
