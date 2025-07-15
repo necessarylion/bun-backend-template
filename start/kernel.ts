@@ -5,8 +5,12 @@ import { Migration } from '#core/migration';
 
 // run migration before server start
 if (env.NODE_ENV === 'production') {
-  const migration = new Migration();
-  await migration.up();
+  try {
+    const migration = new Migration();
+    await migration.up();
+  } catch (error) {
+    logger.error('Migration failed:', error);
+  }
 }
 
 serve({
@@ -15,4 +19,4 @@ serve({
   fetch: async () => new Response('Route not found', { status: 404 }),
 });
 
-logger.info(`Server is running on http://localhost:${env.PORT}`);
+logger.info(`[${env.NODE_ENV}] Server is running on http://localhost:${env.PORT}`);

@@ -13,7 +13,8 @@ COPY --from=builder /app/server /app/server
 COPY --from=builder /app/db /app/db
 
 # set env
-ENV APP_ENV=production
-EXPOSE 3000
+ENV NODE_ENV=production
+ENV PORT=3333
+EXPOSE 3333
 # Run the standalone binary
 CMD ["/app/server"]
