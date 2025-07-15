@@ -19,4 +19,6 @@ serve({
   fetch: async () => new Response('Route not found', { status: 404 }),
 });
 
-logger.info(`[${env.NODE_ENV}] Server is running on http://localhost:${env.PORT}`);
+logger.info(
+  `[${env.NODE_ENV}] Server is running on http://localhost:${env.PORT}`,
+);

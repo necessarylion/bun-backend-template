@@ -10,11 +10,14 @@ export default class ValidationException extends Exception {
   }
 
   override handle() {
-    return Response.json({
-      code: snakeCase(this.code).toUpperCase(),
-      message: this.message,
-      status: 422,
-      errors: this.errors,
-    }, {status: this.status});
+    return Response.json(
+      {
+        code: snakeCase(this.code).toUpperCase(),
+        message: this.message,
+        status: 422,
+        errors: this.errors,
+      },
+      { status: this.status },
+    );
   }
 }

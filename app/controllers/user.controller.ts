@@ -1,7 +1,6 @@
 import { Service } from 'typedi';
 import UserService from '../services/user.service';
 import vine from '@vinejs/vine';
-import Exception from '#core/exception/exception';
 
 @Service()
 export default class UserController {

@@ -1,4 +1,4 @@
-import { snakeCase } from "change-case";
+import { snakeCase } from 'change-case';
 
 export default class Exception extends Error {
   public readonly code: string;
@@ -12,10 +12,13 @@ export default class Exception extends Error {
   }
 
   handle() {
-    return Response.json({
-      code: snakeCase(this.code).toUpperCase(),
-      message: this.message,
-      status: this.status,
-    }, {status: this.status});
+    return Response.json(
+      {
+        code: snakeCase(this.code).toUpperCase(),
+        message: this.message,
+        status: this.status,
+      },
+      { status: this.status },
+    );
   }
 }

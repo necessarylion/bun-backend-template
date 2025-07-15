@@ -77,15 +77,16 @@ export class Router {
       if (!records[path]) records[path] = {};
       // load middleware services on app startup
       const services = router.#getContainerServices(middlewares, controller);
-      // assign the controller to the route path
+
+      // assign the handler to the route path
       records[path][method] = async (req: Request) => {
         try {
-          const mRes = await router.#handleMiddlewares(
+          const middlewareResponse = await router.#handleMiddlewares(
             req,
             middlewares,
             services,
           );
-          if (mRes) return responseParser(mRes);
+          if (middlewareResponse) return responseParser(middlewareResponse);
           return await router.#handleController(req, controller, services);
         } catch (error: any) {
           if (error instanceof Exception) {
@@ -98,6 +99,12 @@ export class Router {
     return records;
   }
 
+  /**
+   * Get the container services
+   * @param middlewares - The middlewares to handle
+   * @param controller - The controller function
+   * @returns The services
+   */
   #getContainerServices(middlewares: Middleware[], controller: Controller) {
     const services: Record<string, any> = {};
     for (const middleware of middlewares) {
