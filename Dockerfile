@@ -10,6 +10,7 @@ RUN bun run build
 FROM debian:12-slim
 WORKDIR /app
 COPY --from=builder /app/server /app/server
+COPY --from=builder /app/db /app/db
 
 # set env
 ENV APP_ENV=production
