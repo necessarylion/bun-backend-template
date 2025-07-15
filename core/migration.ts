@@ -2,6 +2,7 @@ import sql from '#start/sql';
 import { readdir } from 'node:fs/promises';
 import { logger } from '#core/logger';
 import { snakeCase } from 'change-case';
+import { Glob } from 'bun';
 export class Migration {
   private migrationDir: string;
 
@@ -14,22 +15,23 @@ export class Migration {
    */
   async up() {
     this.#createMigrationTableIfNotExists();
-    const fileList = await readdir(this.migrationDir, { recursive: true });
+    const glob = new Glob("**/*up.sql");
+    const fileList: string[] = []
+    for await (const path of glob.scan(this.migrationDir)) {
+      fileList.push(path)
+    }
     const files = fileList.sort((a, b) => a.localeCompare(b));
-    const ext = '/up.sql';
     for (let file of files) {
-      if (file.includes(ext)) {
-        file = file.replace(ext, '');
-        const filePath = this.migrationDir + file + ext;
-        const [exist] =
-          await sql`SELECT 1 FROM migrations WHERE name = ${file}`;
-        if (exist) continue;
-        logger.info(`Migrating ${file} ...`);
-        await sql.file(filePath);
-        const [lastBatch] = await sql`SELECT MAX(batch) FROM migrations`;
-        await sql`INSERT INTO migrations (name, batch) VALUES (${file}, ${lastBatch.max || 0 + 1})`;
-        logger.info(`Migrated ${file}`);
-      }
+      const filePath = this.migrationDir + file;
+      const migration = file.replace(this.migrationDir, '').replace('/up.sql', '');
+      const [exist] =
+        await sql`SELECT 1 FROM migrations WHERE name = ${migration}`;
+      if (exist) continue;
+      logger.info(`Migrating ${migration} ...`);
+      await sql.file(filePath);
+      const [lastBatch] = await sql`SELECT MAX(batch) FROM migrations`;
+      await sql`INSERT INTO migrations (name, batch) VALUES (${migration}, ${lastBatch.max || 0 + 1})`;
+      logger.info(`Migrated ${migration}`);
     }
     logger.info(`Migrations completed`);
   }
