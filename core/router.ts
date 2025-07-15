@@ -21,7 +21,7 @@ export class Router {
    */
   public constructor() {
     if (!Router.instance) Router.instance = this;
-    return Router.instance
+    return Router.instance;
   }
 
   /**
@@ -49,51 +49,60 @@ export class Router {
    * @param method - The method of the route
    * @param controller - The controller function
    */
-  public static registerRoute(path: string, method: string, controller: Controller, middlewares: Middleware[] = []) {
+  public static registerRoute(
+    path: string,
+    method: string,
+    controller: Controller,
+    middlewares: Middleware[] = [],
+  ) {
     const routerInstance = new Router();
     routerInstance.routes.push({ path, method, controller, middlewares });
     return routerInstance;
   }
 
   /**
-  * Get all registered routes
-  * @returns A record of routes
-  */
+   * Get all registered routes
+   * @returns A record of routes
+   */
   public static list() {
-    const records: Record<string, any> = {}
+    const records: Record<string, any> = {};
     const router = new Router();
     for (const { controller, path, method, middlewares } of router.routes) {
       // setting the object for path
-      // eg. 
+      // eg.
       // {
       //   '/users': {}
       // }
-      if (!records[path]) records[path] = {}
+      if (!records[path]) records[path] = {};
       // load middleware services on app startup
-      const services = router.#getContainerServices(middlewares, controller)
+      const services = router.#getContainerServices(middlewares, controller);
       // assign the controller to the route path
       records[path][method] = async (req: Request) => {
-        let mRes = await router.#handleMiddlewares(req, middlewares, services)
-        if (mRes) return responseParser(mRes)
-        return router.#handleController(req, controller, services)
-      }
+        const mRes = await router.#handleMiddlewares(
+          req,
+          middlewares,
+          services,
+        );
+        if (mRes) return responseParser(mRes);
+        return router.#handleController(req, controller, services);
+      };
     }
     return records;
   }
 
   #getContainerServices(middlewares: Middleware[], controller: Controller) {
-    const services: Record<string, any> = {}
+    const services: Record<string, any> = {};
     for (const middleware of middlewares) {
-      if (!isClass(middleware) ) continue
-      const service = Container.get(middleware)
-      services[middleware.name] = service
+      if (!isClass(middleware)) continue;
+      const service = Container.get(middleware);
+      services[middleware.name] = service;
     }
     // getting the class instance using dependency injection container
     if (isTuple(controller)) {
-      const service = Container.get(controller[0])
-      services[controller[0].name] = service
+      const service = Container.get(controller[0]);
+      services[controller[0].name] = service;
     }
-    return services
+    return services;
   }
 
   /**
@@ -103,20 +112,24 @@ export class Router {
    * @param services - The services
    * @returns The response from the controller
    */
-  async #handleController(req: Request, controller: Controller, services: Record<string, any>) {
-    let res: any = undefined
+  async #handleController(
+    req: Request,
+    controller: Controller,
+    services: Record<string, any>,
+  ) {
+    let res: any = undefined;
     if (isTuple(controller)) {
       // if controller is a tuple, get the class instance and call the method
       // else call the controller function
       // tuple controller eg. [UserController, 'index']
       // function controller eg. (req: Request) => any
-      const service = services[controller[0].name]
-      const funcName = controller[1]
-      res = await service?.[funcName](req)
+      const service = services[controller[0].name];
+      const funcName = controller[1];
+      res = await service?.[funcName](req);
     } else {
-      res = await controller(req) 
+      res = await controller(req);
     }
-    return responseParser(res)
+    return responseParser(res);
   }
 
   /**
@@ -126,17 +139,21 @@ export class Router {
    * @param mServices - The middleware services
    * @returns The response from the middlewares
    */
-  async #handleMiddlewares(req: Request, middlewares: Middleware[], services: Record<string, any>) {
-    let mRes: any = undefined
+  async #handleMiddlewares(
+    req: Request,
+    middlewares: Middleware[],
+    services: Record<string, any>,
+  ) {
+    let mRes: any = undefined;
     for (const middleware of middlewares) {
       if (isClass(middleware)) {
-        mRes = await services[middleware.name]?.handle(req)
+        mRes = await services[middleware.name]?.handle(req);
       } else {
-        mRes = await middleware(req)
+        mRes = await middleware(req);
       }
-      // if middleware returns a response, 
+      // if middleware returns a response,
       // return it immediately to stop the execution of other middlewares
-      if (mRes) return mRes
+      if (mRes) return mRes;
     }
     return mRes;
   }

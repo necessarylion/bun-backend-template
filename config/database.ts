@@ -1,4 +1,4 @@
-import { env, type SQLOptions } from "bun";
+import { env, type SQLOptions } from 'bun';
 
 export default {
   // Optional configuration
@@ -13,4 +13,4 @@ export default {
   idleTimeout: 30, // Close idle connections after 30s
   maxLifetime: 0, // Connection lifetime in seconds (0 = forever)
   connectionTimeout: 30, // Timeout when establishing new connections
-} as SQLOptions
+} as SQLOptions;

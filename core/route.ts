@@ -1,8 +1,7 @@
-import { Router } from "./router";
-import type { Controller, Middleware } from "./types";
+import { Router } from './router';
+import type { Controller, Middleware } from './types';
 
 export default class Route {
-
   /**
    * The instance of the Route class
    * @type {Route}
@@ -13,13 +12,13 @@ export default class Route {
    * The middlewares array
    * @type {Array}
    */
-  private middlewares: Middleware[] = []
+  private middlewares: Middleware[] = [];
 
   /**
    * The current path
    * @type {string}
    */
-   private currentPath: string = ''
+  private currentPath: string = '';
 
   /**
    * Constructor for the Route class
@@ -27,7 +26,7 @@ export default class Route {
    */
   public constructor() {
     if (!Route.instance) Route.instance = this;
-    return Route.instance
+    return Route.instance;
   }
 
   /**
@@ -37,11 +36,11 @@ export default class Route {
    * @returns The instance of the Route class
    */
   public static group(path: string, cb: () => void) {
-    const route = new Route()
-    route.middlewares = []
-    route.currentPath = path
-    cb()
-    return route
+    const route = new Route();
+    route.middlewares = [];
+    route.currentPath = path;
+    cb();
+    return route;
   }
 
   /**
@@ -50,10 +49,10 @@ export default class Route {
    * @returns The instance of the Route class
    */
   public middleware(middleware: Middleware) {
-    this.middlewares.push(middleware)
-    return this
+    this.middlewares.push(middleware);
+    return this;
   }
-  
+
   /**
    * Register a GET route
    * @param path - The path of the route
@@ -125,9 +124,12 @@ export default class Route {
    * @returns The instance of the Route class
    */
   public static add(path: string, method: string, controller: Controller) {
-    const route = new Route()
-    let newPath = (route.currentPath + '/' + path).replace(/\/+/g, '/').trim().replace(/\/$/, '')
-    newPath = newPath === '' ? '/' : newPath
+    const route = new Route();
+    let newPath = (route.currentPath + '/' + path)
+      .replace(/\/+/g, '/')
+      .trim()
+      .replace(/\/$/, '');
+    newPath = newPath === '' ? '/' : newPath;
     return Router.registerRoute(newPath, method, controller, route.middlewares);
   }
 }
